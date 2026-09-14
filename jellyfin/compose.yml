@@ -1,0 +1,20 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
+    container_name: jellyfin
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - "991"   # render group GID on this host
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - type: bind
+        source: /mnt/media
+        target: /media
+    restart: 'unless-stopped'
